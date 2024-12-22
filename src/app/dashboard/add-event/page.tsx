@@ -1,7 +1,7 @@
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { cabin } from "@/app/fonts";
-import { AddEventForm } from "@/app/components/AddEventForm";
+import { AddEventForm } from "@/components/AddEventForm";
 
 export default async function AddEvent() {
   const supabase = await createClient();

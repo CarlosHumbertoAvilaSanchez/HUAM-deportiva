@@ -1,7 +1,7 @@
 "use client";
-import Input from "@/app/components/Input";
+import Input from "@/components/Input";
 import { signInAction } from "@/app/actions";
-import Button from "@/app/components/Button";
+import Button from "@/components/Button";
 
 export default function LoginForm() {
   return (

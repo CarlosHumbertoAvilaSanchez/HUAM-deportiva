@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { Users, MapPin, Tag, FileImage } from "lucide-react";
-import Input from "@/app/components/Input";
-import TextArea from "@/app/components/TextArea";
+import Input from "@/components/Input";
+import TextArea from "@/components/TextArea";
 import addEvent from "@/utils/supabase/addEvent";
 
 function handleCategories(categories: string) {
