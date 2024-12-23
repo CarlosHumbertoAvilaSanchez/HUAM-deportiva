@@ -10,15 +10,22 @@ export default async function addEvent(data: {
 }) {
   const supabase = createClient();
   const { categories, ...cleanedData } = data;
-  console.log(data.date);
-  const { data: result, error } = await supabase
+
+  const categoriesData = categories.map((categorie) => ({
+    name: categorie,
+  }));
+
+  const { data: eventResult, error: eventError } = await supabase
     .from("events")
     .insert([cleanedData]);
 
-  if (error) {
-    console.error("Error inserting data", error);
-    throw new Error(error.message);
+  if (eventError) {
+    console.error("Error inserting data", eventError);
+    throw new Error(eventError.message);
   }
 
-  return result;
+  const { error: categorieError } = await supabase
+    .from("categories")
+    .insert(categoriesData);
+  return eventResult;
 }
