@@ -148,7 +148,7 @@ export function AddEventForm() {
               e,
               name,
               date,
-              participants,
+              typeof participants === "number" ? participants : 0,
               location,
               categories,
               description
