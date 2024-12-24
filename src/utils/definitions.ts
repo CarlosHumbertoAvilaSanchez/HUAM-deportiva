@@ -8,11 +8,10 @@ export interface Event {
   banner: string;
 }
 
-
 export interface Category {
   id?: string;
   name: string;
-  gender: number;
+  genderId?: number;
   minAge: number | null;
   maxAge: number | null;
 }

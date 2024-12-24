@@ -33,7 +33,7 @@ export default function Popup({ title, onClose, children }: PopupProps) {
         ref={dialogRef}
         className="p-4 min-w-[400px] min-[600px] rounded-lg text-[#043364] flex flex-col gap-y-4 backdrop:bg-gray-950/70"
       >
-        <div className="flex justify-between">
+        <div className="flex justify-between items-center">
           <h2 className="text-2xl">{title}</h2>
           <button
             className="border-[1px] border-slate-300 rounded-md w-[24px] h-[24px] flex items-center justify-center bg-slate-50"

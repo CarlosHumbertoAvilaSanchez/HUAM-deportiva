@@ -14,7 +14,7 @@ import type { Category } from "@/utils/definitions";
 export function AddEventForm() {
   const [name, setName] = useState("");
   const [date, setDate] = useState("");
-  const [participants, setParticipants] = useState(1);
+  const [participants, setParticipants] = useState<number | string>("");
   const [location, setLocation] = useState("");
   const [categories, setCategories] = useState<Category[]>([]);
   const [description, setDescription] = useState("");
@@ -30,10 +30,15 @@ export function AddEventForm() {
   ) {
     e.preventDefault();
     addEvent({ name, date, participants, location, categories, description });
+    setName("");
+    setDate("");
+    setParticipants("");
+    setLocation("");
+    setCategories([]);
+    setDescription("");
   }
 
   function onClose() {
-    console.log(categories);
     redirect("/dashboard/add-event");
   }
 
@@ -54,6 +59,7 @@ export function AddEventForm() {
             type="text"
             required
             onChange={(e) => setName(e.target.value)}
+            value={name}
           />
         </div>
         <div className="space-y-2 flex flex-col">
@@ -62,6 +68,7 @@ export function AddEventForm() {
             type="date"
             required
             onChange={(e) => setDate(e.target.value)}
+            value={date}
           />
         </div>
         <div className="space-y-2 flex flex-col">
@@ -71,11 +78,11 @@ export function AddEventForm() {
             <Input
               type="number"
               id="participants"
-              min="1"
               className="w-full pl-10"
               placeholder="Enter participants limit"
               required
               onChange={(e) => setParticipants(parseInt(e.target.value))}
+              value={participants}
             />
           </div>
         </div>
@@ -89,6 +96,7 @@ export function AddEventForm() {
               className="w-full pl-10"
               required
               onChange={(e) => setLocation(e.target.value)}
+              value={location}
             />
           </div>
         </div>
@@ -102,14 +110,6 @@ export function AddEventForm() {
               <PlusCircle />
               Add Categories
             </Link>
-
-            {/* <Input
-              id="categories"
-              placeholder="Enter categories (comma separated)"
-              className="w-full pl-10"
-              required
-              onChange={(e) => setCategories(handleCategories(e.target.value))}
-            /> */}
           </div>
         </div>
         <div className="space-y-2 flex flex-col">
@@ -120,6 +120,7 @@ export function AddEventForm() {
             rows={4}
             required
             onChange={(e) => setDescription(e.target.value)}
+            value={description}
           />
         </div>
         <div className="space-y-2 flex flex-col">
@@ -131,7 +132,10 @@ export function AddEventForm() {
               accept="image/*"
               className="hidden"
             />
-            <button className="border-slate-100 border-2 rounded-md flex items-center p-4 m-0">
+            <button
+              className="border-slate-100 border-2 rounded-md flex items-center p-4 m-0"
+              onClick={() => console.log(categories)}
+            >
               <FileImage className="mr-2 h-4 w-4" />
               Upload Banner
             </button>
