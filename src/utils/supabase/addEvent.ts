@@ -1,19 +1,16 @@
 import { createClient } from "@/utils/supabase/client";
+import { Category } from "@/utils/definitions";
 
 export default async function addEvent(data: {
   name: string;
   date: string;
   participants: number;
   location: string;
-  categories: string[];
+  categories: Category[];
   description: string;
 }) {
   const supabase = createClient();
   const { categories, ...cleanedData } = data;
-
-  const categoriesData = categories.map((categorie) => ({
-    name: categorie,
-  }));
 
   const { data: eventResult, error: eventError } = await supabase
     .from("events")
@@ -24,8 +21,5 @@ export default async function addEvent(data: {
     throw new Error(eventError.message);
   }
 
-  const { error: categorieError } = await supabase
-    .from("categories")
-    .insert(categoriesData);
   return eventResult;
 }

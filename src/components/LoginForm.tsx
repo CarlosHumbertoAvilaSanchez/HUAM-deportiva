@@ -1,5 +1,5 @@
 "use client";
-import Input from "@/components/Input";
+import { Input } from "@/components/Input";
 import { signInAction } from "@/app/actions";
 import Button from "@/components/Button";
 

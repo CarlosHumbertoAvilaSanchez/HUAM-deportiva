@@ -7,3 +7,12 @@ export interface Event {
   status: "upcoming" | "ongoing" | "completed";
   banner: string;
 }
+
+
+export interface Category {
+  id?: string;
+  name: string;
+  gender: number;
+  minAge: number | null;
+  maxAge: number | null;
+}
