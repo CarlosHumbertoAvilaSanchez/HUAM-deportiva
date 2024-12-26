@@ -20,3 +20,12 @@ export function encodedRedirect(
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
+
+export function calculateAge(birthDayString: string) {
+  const birthDay = new Date(birthDayString);
+  const today = new Date();
+
+  let age = today.getFullYear() - birthDay.getFullYear();
+
+  return age;
+}

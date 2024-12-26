@@ -9,9 +9,24 @@ export interface Event {
 }
 
 export interface Category {
-  id?: string;
+  id?: string | number;
   name: string;
   genderId?: number;
   minAge: number | null;
   maxAge: number | null;
+  eventId?: number;
+}
+
+export interface Participant {
+  id?: string;
+  eventId?: string;
+  name: string;
+  birthDay: Date;
+  genderId: number;
+  categoryId: number;
+  tshirtSize: string;
+  teamName?: string;
+  email: string;
+  phoneNumber: string;
+  participantNumber?: number;
 }

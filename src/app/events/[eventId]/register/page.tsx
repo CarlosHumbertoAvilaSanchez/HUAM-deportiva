@@ -1,4 +1,5 @@
 import getEventById from "@/utils/supabase/fetchEvent";
+import RegistrationForm from "@/components/RegistrationForm";
 
 export default async function Register({
   params,
@@ -10,5 +11,5 @@ export default async function Register({
   const { eventId } = await params;
   const event = await getEventById(eventId);
 
-  return <div>{event.name}</div>;
+  return <RegistrationForm eventId={eventId} />;
 }

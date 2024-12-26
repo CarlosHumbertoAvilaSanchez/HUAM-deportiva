@@ -2,7 +2,7 @@ import { forwardRef, InputHTMLAttributes } from "react";
 import { cn } from "@/utils/utils";
 
 interface Option {
-  value: number | string;
+  value?: number | string;
   label: string;
 }
 
