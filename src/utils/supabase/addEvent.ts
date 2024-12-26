@@ -33,6 +33,7 @@ export default async function addEvent(data: {
     gender_id: category.genderId || null,
     min_age: category.minAge,
     max_age: category.maxAge,
+    event_id: eventId,
   }));
 
   const { data: insertedCategories, error: categoryError } = await supabase
@@ -49,21 +50,5 @@ export default async function addEvent(data: {
     throw new Error("No categories were inserted.");
   }
 
-  const eventCategories = insertedCategories.map((category) => ({
-    event_id: eventId,
-    category_id: category.id,
-  }));
-
-  const { error: eventCategoriesError } = await supabase
-    .from("event_categories")
-    .insert(eventCategories);
-
-  if (eventCategoriesError) {
-    console.error(
-      "Error inserting event_categories data",
-      eventCategoriesError
-    );
-    throw new Error(eventCategoriesError.message);
-  }
   return eventResult;
 }
