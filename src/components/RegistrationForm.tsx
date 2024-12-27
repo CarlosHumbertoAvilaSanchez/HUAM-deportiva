@@ -15,9 +15,12 @@ interface FormData {
   name: string;
   lastName: string;
   email: string;
+  phoneNumber: string;
   birthDate: string | undefined;
   genderId: number | undefined;
+  categoryId: number;
   tshirthSize: string;
+  team?: string;
   termsAccepted: boolean;
   createAccount: boolean;
 }
@@ -34,9 +37,12 @@ export default function RegistrationForm({ eventId }: { eventId: string }) {
     name: "",
     lastName: "",
     email: "",
+    phoneNumber: "",
     birthDate: "",
     genderId: 0,
+    categoryId: 0,
     tshirthSize: "",
+    team: "",
     termsAccepted: false,
     createAccount: false,
   });
@@ -49,11 +55,7 @@ export default function RegistrationForm({ eventId }: { eventId: string }) {
       age: number,
       genderId: number
     ) {
-      const data = await getAvailableCategories(
-        eventId,
-        age,
-        genderId ? genderId : 3
-      );
+      const data = await getAvailableCategories(eventId, age, genderId);
 
       setAvailableCategories(data);
     }
@@ -75,7 +77,7 @@ export default function RegistrationForm({ eventId }: { eventId: string }) {
       [name]: type === "checkbox" ? checked : value,
     }));
 
-    console.log(formData);
+    console.log(availableCategories.length);
   };
 
   const handleSelectChange = (
@@ -162,6 +164,7 @@ export default function RegistrationForm({ eventId }: { eventId: string }) {
                     ]}
                     onChange={(e) => handleSelectChange("genderId", e)}
                     required
+                    name="genderId"
                     value={formData.genderId}
                   />
                 </div>
@@ -173,12 +176,24 @@ export default function RegistrationForm({ eventId }: { eventId: string }) {
               <div>
                 <label htmlFor="category">Categoria</label>
                 <Select
-                  options={availableCategories.map((category) => ({
-                    value: category.id !== undefined ? category.id : 0,
-                    label: category.name,
-                  }))}
+                  options={
+                    availableCategories.length !== 0
+                      ? availableCategories.map((category) => ({
+                          value: category.id,
+                          label: category.name,
+                        }))
+                      : [
+                          {
+                            value: 0,
+                            label:
+                              "Registre su edad y genero para mostrar categorias",
+                          },
+                        ]
+                  }
                   className="w-full"
-                  name="category"
+                  name="categoryId"
+                  value={formData.categoryId}
+                  onChange={(e) => handleSelectChange("categoryId", e)}
                   required
                 />
               </div>
@@ -188,6 +203,8 @@ export default function RegistrationForm({ eventId }: { eventId: string }) {
                   options={TSHIRT_SHIZES}
                   className="w-full"
                   name="tshirtSize"
+                  value={formData.tshirthSize}
+                  onChange={(e) => handleSelectChange("tshirtSize", e)}
                   required
                 />
               </div>
@@ -198,6 +215,8 @@ export default function RegistrationForm({ eventId }: { eventId: string }) {
                   className="w-full"
                   name="team"
                   placeholder="Ingrese su equipo"
+                  onChange={handleInputChange}
+                  value={formData.team}
                 />
               </div>
             </>
@@ -211,11 +230,20 @@ export default function RegistrationForm({ eventId }: { eventId: string }) {
                   className="w-full"
                   name="email"
                   placeholder="Ingrese su correo electrónico"
+                  onChange={handleInputChange}
+                  value={formData.email}
                 />
               </div>
               <div>
                 <label htmlFor="phone">Número de teléfono</label>
-                <Input type="tel" className="w-full" name="phone" required />
+                <Input
+                  type="tel"
+                  className="w-full"
+                  name="phone"
+                  required
+                  value={formData.phoneNumber}
+                  onChange={handleInputChange}
+                />
               </div>
               <div className="flex gap-2">
                 <Input type="checkbox" value={0} name="createAccount" />
