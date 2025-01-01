@@ -4,27 +4,27 @@ export const TSHIRT_SHIZES = [
     label: "Elija su talla de playera",
   },
   {
-    value: "xs",
+    value: 1,
     label: "XS",
   },
   {
-    value: "s",
+    value: 2,
     label: "S",
   },
   {
-    value: "m",
+    value: 3,
     label: "M",
   },
   {
-    value: "l",
+    value: 4,
     label: "L",
   },
   {
-    value: "xl",
+    value: 5,
     label: "XL",
   },
   {
-    value: "xxl",
+    value: 6,
     label: "XXL",
   },
 ];

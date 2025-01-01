@@ -19,14 +19,24 @@ export interface Category {
 
 export interface Participant {
   id?: string;
-  eventId?: string;
+  categoryId: number;
+  team?: string;
+  eventId: string;
+  profileId: string;
+  tshirtSizeId: number;
+}
+
+export interface TshirtSize {
+  id?: number;
+  size: string;
+}
+
+export interface Profiles {
+  id?: string;
   name: string;
+  lastName: string;
   birthDay: Date;
   genderId: number;
-  categoryId: number;
-  tshirtSize: string;
-  teamName?: string;
-  email: string;
-  phoneNumber: string;
-  participantNumber?: number;
+  userId?: string;
+  email?: string;
 }

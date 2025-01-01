@@ -1,5 +1,5 @@
 import getEventById from "@/utils/supabase/fetchEvent";
-import RegistrationForm from "@/components/RegistrationForm";
+import RegistrationForm from "@/components/register/RegistrationForm";
 
 export default async function Register({
   params,
