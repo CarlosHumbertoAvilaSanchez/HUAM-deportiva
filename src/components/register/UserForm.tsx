@@ -1,4 +1,5 @@
 import { Input, Select } from "@components/Input";
+import { GenderId, RegisterErrors as Errors } from "@/utils/definitions";
 
 const GENDER_OPTIONS = [
   { value: "", label: "Elija su genero" },
@@ -10,11 +11,12 @@ type UserFields = {
   name: string;
   lastName: string;
   birthDay: string;
-  genderId: string;
+  genderId: GenderId | "";
 };
 
 type UserFormProps = UserFields & {
   updateFields: (fields: Partial<UserFields>) => void;
+  fieldErrors?: Partial<Errors>;
 };
 
 export default function UserForm({
@@ -23,6 +25,7 @@ export default function UserForm({
   birthDay,
   genderId,
   updateFields,
+  fieldErrors,
 }: UserFormProps) {
   return (
     <>
@@ -31,12 +34,12 @@ export default function UserForm({
           <label htmlFor="name">Nombre</label>
           <div>
             <Input
+              errorMessage={fieldErrors?.name && fieldErrors.name[0]}
               type="text"
               id="name"
               name="name"
               placeholder="Ingrese su nombre"
               className="w-full"
-              required
               value={name}
               onChange={(e) => updateFields({ name: e.target.value })}
             />
@@ -46,12 +49,12 @@ export default function UserForm({
           <label htmlFor="lastName">Apellidos</label>
           <div>
             <Input
+              errorMessage={fieldErrors?.lastName && fieldErrors.lastName[0]}
               type="text"
               id="lastName"
               name="lastName"
               placeholder="Ingrese su apellido"
               className="w-full"
-              required
               value={lastName}
               onChange={(e) => updateFields({ lastName: e.target.value })}
             />
@@ -62,9 +65,9 @@ export default function UserForm({
         <div className="flex flex-col">
           <label htmlFor="birthDay">Fecha de nacimiento</label>
           <Input
+            errorMessage={fieldErrors?.birthDay && fieldErrors.birthDay[0]}
             type="date"
             name="birthDay"
-            required
             value={birthDay}
             onChange={(e) => updateFields({ birthDay: e.target.value })}
           />
@@ -74,11 +77,13 @@ export default function UserForm({
         <div className="flex flex-col">
           <label htmlFor="genderId">Genero</label>
           <Select
+            errorMessage={fieldErrors?.genderId && fieldErrors.genderId[0]}
             options={GENDER_OPTIONS}
-            required
             name="genderId"
             value={genderId}
-            onChange={(e) => updateFields({ genderId: e.target.value })}
+            onChange={(e) =>
+              updateFields({ genderId: e.target.value as GenderId })
+            }
           />
         </div>
       </div>

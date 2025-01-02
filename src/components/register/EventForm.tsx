@@ -1,19 +1,20 @@
 import { Select, Input } from "@components/Input";
 import { TSHIRT_SHIZES } from "@/utils/constants";
 import { Category } from "@/utils/definitions";
-import { useFetchCategories } from "@/hooks/useFetchCategories";
-
+import { GenderId } from "@/utils/definitions";
+import { RegisterErrors as Errors } from "@/utils/definitions";
 type EventFields = {
   birthDay: string;
-  genderId: string;
-  categoryId: string;
-  tshirtSizeId: string;
+  genderId: GenderId | "";
+  categoryId: number | "";
+  tshirtSizeId: number | "";
   team?: string;
 };
 
 type EventFormProps = EventFields & {
   updateFields: (fields: Partial<EventFields>) => void;
   availableCategories: Category[];
+  fieldErrors?: Partial<Errors>;
 };
 
 export default function EventForm({
@@ -24,12 +25,14 @@ export default function EventForm({
   team,
   updateFields,
   availableCategories,
+  fieldErrors,
 }: EventFormProps) {
   return (
     <>
       <div>
         <label htmlFor="category">Categoria</label>
         <Select
+          errorMessage={fieldErrors?.categoryId && fieldErrors.categoryId[0]}
           options={
             availableCategories.length !== 0
               ? [
@@ -51,26 +54,36 @@ export default function EventForm({
           }
           className="w-full"
           name="categoryId"
-          required
           disabled={!birthDay || !genderId}
           value={categoryId}
-          onChange={(e) => updateFields({ categoryId: e.target.value })}
+          onChange={(e) =>
+            updateFields({
+              categoryId: e.target.value ? parseInt(e.target.value) : "",
+            })
+          }
         />
       </div>
       <div>
         <label htmlFor="tshirtSizeId">Talla de playera</label>
         <Select
+          errorMessage={
+            fieldErrors?.tshirtSizeId && fieldErrors.tshirtSizeId[0]
+          }
           options={TSHIRT_SHIZES}
           className="w-full"
           name="tshirtSizeId"
-          required
           value={tshirtSizeId}
-          onChange={(e) => updateFields({ tshirtSizeId: e.target.value })}
+          onChange={(e) =>
+            updateFields({
+              tshirtSizeId: e.target.value ? parseInt(e.target.value) : "",
+            })
+          }
         />
       </div>
       <div>
         <label htmlFor="team">Equipo (opcional)</label>
         <Input
+          errorMessage={fieldErrors?.team && fieldErrors.team[0]}
           type="text"
           className="w-full"
           name="team"

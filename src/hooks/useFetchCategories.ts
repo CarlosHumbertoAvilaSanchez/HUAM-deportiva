@@ -23,7 +23,6 @@ export function useFetchCategories({
       genderId: number
     ) {
       const data = await getAvailableCategories(eventId, age, genderId);
-      console.log("hice un fetch");
       setAvailableCategories(data);
     }
 

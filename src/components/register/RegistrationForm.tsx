@@ -3,14 +3,26 @@
 import { useState } from "react";
 import UserForm from "@/components/register/UserForm";
 import EventForm from "@/components/register/EventForm";
-import ContactForm from "@/components/register/AccountForm";
+import AccountForm from "@/components/register/AccountForm";
 import ProgressBar from "@components/ProgressBar";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cabin } from "@/app/fonts";
 import Button from "@components/Button";
-import registerParticipant from "@/utils/supabase/registerParticipant";
+import { GenderId } from "@/utils/definitions";
 import { useMultistepForm } from "@/hooks/useMultistepForm";
 import { useFetchCategories } from "@/hooks/useFetchCategories";
+import {
+  UserRegisterSchema,
+  EventRegisterSchema,
+  AccountRegisterSchema,
+} from "@/utils/zodSchemas";
+import { RegisterErrors as Errors } from "@/utils/definitions";
+
+const validationSchemas = [
+  UserRegisterSchema,
+  EventRegisterSchema,
+  AccountRegisterSchema,
+] as const;
 
 type FormData = {
   name: string;
@@ -18,9 +30,9 @@ type FormData = {
   email: string;
   phoneNumber: string;
   birthDay: string;
-  genderId: string;
-  categoryId: string;
-  tshirtSizeId: string;
+  genderId: GenderId | "";
+  categoryId: number | "";
+  tshirtSizeId: number | "";
   team?: string;
   termsAccepted: boolean;
   createAccount: boolean;
@@ -42,6 +54,7 @@ const INITIAL_DATA: FormData = {
 
 export default function RegistrationForm({ eventId }: { eventId: string }) {
   const [formData, setFormData] = useState(INITIAL_DATA);
+  const [errors, setErrors] = useState<Partial<Errors>>({});
   const { availableCategories } = useFetchCategories({
     birthDay: formData.birthDay,
     genderId: formData.genderId,
@@ -52,22 +65,42 @@ export default function RegistrationForm({ eventId }: { eventId: string }) {
       return { ...prev, ...fields };
     });
   }
+
   const { steps, step, currentStepIndex, prev, next, isFirstStep, isLastStep } =
     useMultistepForm([
-      <UserForm key="user" {...formData} updateFields={updateFields} />,
+      <UserForm
+        key="user"
+        {...formData}
+        updateFields={updateFields}
+        fieldErrors={errors}
+      />,
       <EventForm
         key="event"
         {...formData}
         updateFields={updateFields}
         availableCategories={availableCategories}
+        fieldErrors={errors}
       />,
-      <ContactForm key="contact" {...formData} updateFields={updateFields} />,
+      <AccountForm
+        key="contact"
+        {...formData}
+        updateFields={updateFields}
+        fieldErrors={errors}
+      />,
     ]);
 
   function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (!isLastStep) return next();
-    // Aquí va la función de submit
+    const submission = validationSchemas[currentStepIndex].safeParse(formData);
+    if (!submission.success) {
+      setErrors(submission.error.flatten().fieldErrors);
+      return;
+    } else if (!isLastStep) {
+      setErrors({});
+      return next();
+    }
+
+    // AQUI EMPIEZA LO BUENO
   }
 
   return (

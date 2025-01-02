@@ -1,3 +1,5 @@
+import { z } from "zod";
+
 export interface Event {
   id: string;
   name: string;
@@ -8,14 +10,16 @@ export interface Event {
   banner: string;
 }
 
-export interface Category {
-  id?: string | number;
-  name: string;
-  genderId?: number;
-  minAge: number | null;
-  maxAge: number | null;
-  eventId?: number;
-}
+export const CategorySchema = z.object({
+  id: z.string().optional(),
+  name: z.string().min(3),
+  genderId: z.number().gt(0),
+  minAge: z.number().gt(5, "La edad mínima es de 5 años"),
+  maxAge: z.number(),
+  eventId: z.string(),
+});
+
+export type Category = z.infer<typeof CategorySchema>;
 
 export interface Participant {
   id?: string;
@@ -39,4 +43,23 @@ export interface Profiles {
   genderId: number;
   userId?: string;
   email?: string;
+}
+
+export enum GenderId {
+  male = "1",
+  female = "2",
+}
+
+export interface RegisterErrors {
+  name: Array<string>;
+  lastName: Array<string>;
+  email: Array<string>;
+  phoneNumber: Array<string>;
+  birthDay: Array<string>;
+  genderId: Array<string>;
+  categoryId: Array<string>;
+  tshirtSizeId: Array<string>;
+  team?: Array<string>;
+  termsAccepted: Array<string>;
+  createAccount: Array<string>;
 }
