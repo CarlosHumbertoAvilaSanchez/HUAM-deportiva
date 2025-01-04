@@ -63,3 +63,18 @@ export interface RegisterErrors {
   termsAccepted: Array<string>;
   createAccount: Array<string>;
 }
+
+export interface ParticipantForm {
+  eventId?: string;
+  name: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
+  birthDay: string;
+  genderId: GenderId | "";
+  categoryId: number | "";
+  tshirtSizeId: number | "";
+  team?: string;
+  termsAccepted: boolean;
+  createAccount: boolean;
+}

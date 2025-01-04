@@ -1,5 +1,6 @@
 import { createClient } from "@/utils/supabase/client";
 import type { RegisterFormData } from "@/utils/definitions";
+
 export default async function registerParticipant(
   formData: RegisterFormData,
   eventId: string

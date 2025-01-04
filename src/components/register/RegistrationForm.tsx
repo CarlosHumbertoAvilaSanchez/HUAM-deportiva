@@ -8,7 +8,7 @@ import ProgressBar from "@components/ProgressBar";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cabin } from "@/app/fonts";
 import Button from "@components/Button";
-import { GenderId } from "@/utils/definitions";
+import type { ParticipantForm } from "@/utils/definitions";
 import { useMultistepForm } from "@/hooks/useMultistepForm";
 import { useFetchCategories } from "@/hooks/useFetchCategories";
 import {
@@ -17,6 +17,7 @@ import {
   AccountRegisterSchema,
 } from "@/utils/zodSchemas";
 import { RegisterErrors as Errors } from "@/utils/definitions";
+import { RegisterToEvent } from "@/app/actions";
 
 const validationSchemas = [
   UserRegisterSchema,
@@ -24,21 +25,7 @@ const validationSchemas = [
   AccountRegisterSchema,
 ] as const;
 
-type FormData = {
-  name: string;
-  lastName: string;
-  email: string;
-  phoneNumber: string;
-  birthDay: string;
-  genderId: GenderId | "";
-  categoryId: number | "";
-  tshirtSizeId: number | "";
-  team?: string;
-  termsAccepted: boolean;
-  createAccount: boolean;
-};
-
-const INITIAL_DATA: FormData = {
+const INITIAL_DATA: ParticipantForm = {
   name: "",
   lastName: "",
   email: "",
@@ -53,14 +40,17 @@ const INITIAL_DATA: FormData = {
 };
 
 export default function RegistrationForm({ eventId }: { eventId: string }) {
-  const [formData, setFormData] = useState(INITIAL_DATA);
+  const [formData, setFormData] = useState({
+    ...INITIAL_DATA,
+    eventId: eventId,
+  });
   const [errors, setErrors] = useState<Partial<Errors>>({});
   const { availableCategories } = useFetchCategories({
     birthDay: formData.birthDay,
     genderId: formData.genderId,
     eventId,
   });
-  function updateFields(fields: Partial<FormData>) {
+  function updateFields(fields: Partial<ParticipantForm>) {
     setFormData((prev) => {
       return { ...prev, ...fields };
     });
@@ -99,8 +89,7 @@ export default function RegistrationForm({ eventId }: { eventId: string }) {
       setErrors({});
       return next();
     }
-
-    // AQUI EMPIEZA LO BUENO
+    RegisterToEvent(formData);
   }
 
   return (

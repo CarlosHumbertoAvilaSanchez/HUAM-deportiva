@@ -46,4 +46,5 @@ export const EventRegistrationSchema = z.object({
   ...UserRegisterSchema.shape,
   ...EventRegisterSchema.shape,
   ...AccountRegisterSchema.shape,
+  eventId: z.string().uuid().optional(),
 });

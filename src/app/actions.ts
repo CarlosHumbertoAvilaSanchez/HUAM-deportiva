@@ -5,6 +5,7 @@ import { createClient } from "@/utils/supabase/server";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { EventRegistrationSchema } from "@/utils/zodSchemas";
+import type { ParticipantForm } from "@/utils/definitions";
 
 export const signUpAction = async (formData: FormData) => {
   const email = formData.get("email")?.toString();
@@ -132,4 +133,29 @@ export const signOutAction = async () => {
   return redirect("/sign-in");
 };
 
-export async function RegisterToEvent(prevState: unknown, formData: FormData) {}
+export async function RegisterToEvent(formData: ParticipantForm) {
+  const supabase = await createClient();
+  const submission = EventRegistrationSchema.safeParse(formData);
+
+  if (!submission.success)
+    return encodedRedirect("error", "/register", "No valid data");
+
+  let { data, error } = await supabase.rpc("insert_participant_and_profile", {
+    input_birth_day: formData.birthDay,
+    input_category_id: formData.categoryId,
+    input_email: formData.email,
+    input_event_id: formData.eventId,
+    input_gender_id: formData.genderId,
+    input_last_name: formData.lastName,
+    input_name: formData.name,
+    input_phone_number: formData.phoneNumber,
+    input_team: formData.team,
+    input_tshirt_size_id: formData.tshirtSizeId,
+  });
+  if (error) {
+    console.error("Error registering:", error);
+    throw error;
+  }
+
+  return data;
+}
