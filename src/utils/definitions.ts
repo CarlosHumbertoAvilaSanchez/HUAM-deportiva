@@ -17,6 +17,8 @@ export const CategorySchema = z.object({
   minAge: z.number().gt(5, "La edad mínima es de 5 años"),
   maxAge: z.number(),
   eventId: z.string(),
+  price: z.number(),
+  currency: z.string().max(3).min(3).optional(),
 });
 
 export type Category = z.infer<typeof CategorySchema>;

@@ -117,7 +117,7 @@ export default function RegistrationForm({ eventId }: { eventId: string }) {
 
             <Button type="submit" className="ml-auto" variant="primary">
               {isLastStep ? (
-                <>Registrate</>
+                <>Continuar con el pago</>
               ) : (
                 <>
                   Siguiente

@@ -42,7 +42,7 @@ export default function EventForm({
                   },
                   ...availableCategories.map((category) => ({
                     value: category.id,
-                    label: category.name,
+                    label: `${category.name} $${category.price}`,
                   })),
                 ]
               : [

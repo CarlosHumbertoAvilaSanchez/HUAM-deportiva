@@ -5,15 +5,6 @@ import Image from "next/image";
 import Events from "@/components/dashboard-event/DashboardEvents";
 
 export default async function Dashboard() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    return redirect("/auth/sign-in");
-  }
-
   return (
     <div className={`min-h-screen bg-gray-100 ${cabin.className}`}>
       <TopBar />
